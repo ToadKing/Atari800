@@ -1272,11 +1272,11 @@ void Atari800_Frame(void)
 		break;
 	case AKEY_UI:
 #ifdef SOUND
-		Sound_Pause();
+		//Sound_Pause();
 #endif
 		UI_Run();
 #ifdef SOUND
-		Sound_Continue();
+		//Sound_Continue();
 #endif
 		break;
 #ifndef CURSES_BASIC
@@ -1342,7 +1342,7 @@ void Atari800_Frame(void)
 #endif /* BASIC */
 	POKEY_Frame();
 #ifdef SOUND
-	Sound_Update();
+	//Sound_Update();
 #endif
 	Atari800_nframes++;
 #ifdef BENCHMARK

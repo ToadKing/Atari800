@@ -59,7 +59,7 @@ char bios_filename[2048];
 static bool failed_init;
 static int num_cont = 4;
 static uint16_t frame_buffer[384*240];
-unsigned char *screenBuffer;
+unsigned short *screenBuffer;
 void ATR800WriteSoundBuffer(uint8_t *buffer, unsigned int len);
 ATR5200ControllerState controllerStates[4];
 
@@ -90,7 +90,7 @@ ATR5200ControllerState controllerStateForPlayer(unsigned long playerNum)
 int PLATFORM_Initialise(int *argc, char *argv[])
 {
 #ifdef SOUND
-	Sound_Initialise(argc, argv);
+	//Sound_Initialise(argc, argv);
 #endif
 	
 	return TRUE;
@@ -104,7 +104,7 @@ int PLATFORM_Exit(int run_monitor)
 		return TRUE;
 	
 #ifdef SOUND
-	Sound_Exit();
+	//Sound_Exit();
 #endif
 	
 	return FALSE;
@@ -497,7 +497,7 @@ void retro_init()
         
 		fprintf(stderr, "5200 BIOS path: %s\n", bios_filename);
         
-        screenBuffer = malloc(384 * 240 * 4);
+        screenBuffer = malloc(384 * 240 * 2);
     }
     else
     {
@@ -531,23 +531,19 @@ void retro_run(void)
 	Atari800_Frame();
     
     //VIDEO
-	UBYTE *source = (UBYTE *)(Screen_atari);
-	UBYTE *destination = screenBuffer;
-	for (int i = 0; i < Screen_HEIGHT; i++)
-    {
-        for (int j = 0; j < Screen_WIDTH; j++)
-        {
-			UBYTE r = Colours_GetR(*source);
-			UBYTE g = Colours_GetG(*source);
-			UBYTE b = Colours_GetB(*source);
-			*destination++ = b;
-			*destination++ = g;
-			*destination++ = r;
-			*destination++ = 0xff;
-			source++;
-		}
-	}
-    video_cb(screenBuffer, Screen_WIDTH, Screen_HEIGHT, Screen_WIDTH * 2);
+   UBYTE *source = (UBYTE *) Screen_atari;
+   for (int i = 0; i < Screen_HEIGHT; i++)
+   {
+      for (int j = 0; j < Screen_WIDTH; j++)
+      {
+         unsigned short color = (Colours_GetB(*source) >> 3); // B
+         color |= (Colours_GetG(*source) >> 3) << 5; // G
+         color |= (Colours_GetR(*source) >> 3) << 10; // R
+         frame_buffer[i * Screen_WIDTH + j] = color;
+         source++;
+      }
+   }
+   video_cb(frame_buffer, Screen_WIDTH, Screen_HEIGHT, Screen_WIDTH * 2);
     
     /*
     for(int i = 0; i != Screen_HEIGHT; i ++)

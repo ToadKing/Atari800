@@ -148,7 +148,7 @@
 #define HAVE_MKDIR 1
 
 /* Define to 1 if you have the `mkstemp' function. */
-#define HAVE_MKSTEMP 1
+/* #undef HAVE_MKSTEMP */
 
 /* Define to 1 if you have the `mktemp' function. */
 #define HAVE_MKTEMP 1
@@ -356,7 +356,7 @@
 /* #undef MONITOR_PROFILE */
 
 /* Define to activate readline support in monitor. */
-#define MONITOR_READLINE 1
+/* #undef MONITOR_READLINE */
 
 /* Define to activate TRACE command in monitor. */
 /* #undef MONITOR_TRACE */

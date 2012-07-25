@@ -34,7 +34,7 @@ else
    SHARED := -shared -Wl,--no-undefined -Wl,--version-script=link.T
    LDFLAGS += -static-libgcc -static-libstdc++ -lwinmm
    ENDIANNESS_DEFINES := -DLSB_FIRST
-   FLAGS += -DHAVE__MKDIR
+   FLAGS += -DHAVE__MKDIR -DMKDIR_TAKES_ONE_ARG
 endif
 PROSYSTEM_DIR := core
 
@@ -76,7 +76,7 @@ PROSYSTEM_SOURCES := $(PROSYSTEM_DIR)/afile.c \
 	$(PROSYSTEM_DIR)/ui_basic.c \
 	$(PROSYSTEM_DIR)/ui.c \
 	$(PROSYSTEM_DIR)/input.c \
-	$(PROSYSTEM_DIR)/sound_oss.c
+	#$(PROSYSTEM_DIR)/sound_oss.c
 
 LIBRETRO_SOURCES := libretro.c
 
